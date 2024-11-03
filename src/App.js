@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.js
+import React, { useState } from 'react';
+import Products from './components/Products';
+import Cart from './components/Cart';
+import Checkout from './components/Checkout';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+    const [cartItems, setCartItems] = useState([]);
+    const [isCheckingOut, setIsCheckingOut] = useState(false);
+    const [message, setMessage] = useState('');
+
+    const addToCart = (product) => {
+        setCartItems([...cartItems, product]);
+    };
+
+    const totalAmount = cartItems.reduce((sum, item) => sum + item.price, 0);
+
+    const handleCheckout = () => setIsCheckingOut(true);
+
+    const onPaymentInitiated = (msg) => {
+        setMessage(msg);
+        setCartItems([]);
+        setIsCheckingOut(false);
+    };
+
+    return (
+        <div>
+            <h1>M-Pesa Payment Integration</h1>
+            <Products addToCart={addToCart} />
+            <Cart cartItems={cartItems} totalAmount={totalAmount} onCheckout={handleCheckout} />
+            {isCheckingOut && (
+                <Checkout cartTotal={totalAmount} onPaymentInitiated={onPaymentInitiated} />
+            )}
+            {message && <p>{message}</p>}
+        </div>
+    );
+};
 
 export default App;
