@@ -11,7 +11,7 @@ const Cart = ({ cartItems, totalAmount, onCheckout }) => (
             ))}
         </ul>
         <h3>Total: ${totalAmount}</h3>
-        <button onClick={onCheckout}>Proceed to Checkout</button>
+        <button onClick={onCheckout}>Checkout</button>
     </div>
 );
 
